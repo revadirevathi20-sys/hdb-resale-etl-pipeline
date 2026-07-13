@@ -6,22 +6,22 @@ RAW_DIR = "data/raw/"
 # Map each file to its date filter
 FILE_CONFIG = [
     {
-        "filename": "resale-flat-prices-based-on-approval-date-2000-feb-2012.csv",
+        "filename": "ResaleFlatPricesBasedonApprovalDate2000Feb2012.csv",
         "date_col": "month",          
         "filter_from": "2012-01",     
     },
     {
-        "filename": "resale-flat-prices-based-on-approval-date-mar-2012-to-dec-2014.csv",
+        "filename": "ResaleFlatPricesBasedonRegistrationDateFromMar2012toDec2014.csv",
         "date_col": "month",
         "filter_from": None,          
     },
     {
-        "filename": "resale-flat-prices-based-on-registration-date-from-jan-2015-to-dec-2016.csv",
+        "filename": "ResaleFlatPricesBasedonRegistrationDateFromJan2015toDec2016.csv",
         "date_col": "month",
         "filter_from": None,
     },
     {
-        "filename": "resale-flat-prices-based-on-registration-date-from-jan-2017-onwards.csv",
+        "filename": "ResaleflatpricesbasedonregistrationdatefromJan2017onwards.csv",
         "date_col": "month",
         "filter_from": None,
     },
