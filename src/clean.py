@@ -192,3 +192,78 @@ def additional_cleaning(df):
 
     print(f"Additional cleaning: {len(failed)} removed, {len(passed)} retained")
     return passed, failed
+
+if __name__ == "__main__":
+
+    # Load master dataset produced by ingest.py
+    df = pd.read_csv(
+        "../data/cleaned/master_raw_combined.csv",
+        low_memory=False
+    )
+
+    # Convert month to datetime
+    df["month"] = pd.to_datetime(df["month"])
+
+    print("\n========== START CLEANING ==========\n")
+
+    # Requirement 2 - Profile data
+    profile_data(df)
+
+    # Requirement 3 - Validate fields
+    passed, failed_validation = validate_fields(df)
+
+    # Requirement 4 - Compute remaining lease
+    passed = compute_remaining_lease(passed)
+
+    # Requirement 5 - Remove duplicate business keys
+    passed, failed_duplicates = handle_duplicate_keys(passed)
+
+    # Requirement 6 - Flag anomalous prices
+    passed, failed_anomalies = flag_anomalous_prices(passed)
+
+    # Requirement 7 - Additional cleaning
+    passed, failed_cleaning = additional_cleaning(passed)
+
+    # -------------------------------------------------
+    # Save outputs
+    # -------------------------------------------------
+
+    passed.to_csv(
+        "../data/cleaned/hdb_resale_cleaned.csv",
+        index=False
+    )
+
+    failed_validation.to_csv(
+        "../data/cleaned/failed_validation.csv",
+        index=False
+    )
+
+    failed_duplicates.to_csv(
+        "../data/cleaned/failed_duplicates.csv",
+        index=False
+    )
+
+    failed_anomalies.to_csv(
+        "../data/cleaned/failed_anomalies.csv",
+        index=False
+    )
+
+    failed_cleaning.to_csv(
+        "../data/cleaned/failed_additional_cleaning.csv",
+        index=False
+    )
+
+    print("\n========== CLEANING SUMMARY ==========")
+    print(f"Original records              : {len(df):,}")
+    print(f"Validation failures           : {len(failed_validation):,}")
+    print(f"Duplicate failures            : {len(failed_duplicates):,}")
+    print(f"Anomalous price failures      : {len(failed_anomalies):,}")
+    print(f"Additional cleaning failures  : {len(failed_cleaning):,}")
+    print(f"Final cleaned records         : {len(passed):,}")
+
+    print("\nFiles saved:")
+    print("../data/cleaned/hdb_resale_cleaned.csv")
+    print("../data/cleaned/failed_validation.csv")
+    print("../data/cleaned/failed_duplicates.csv")
+    print("../data/cleaned/failed_anomalies.csv")
+    print("../data/cleaned/failed_additional_cleaning.csv")
