@@ -86,6 +86,8 @@ def hash_identifier(df):
     
 if __name__ == "__main__":
 
+    os.makedirs("../data/transformed", exist_ok=True)
+
     df = pd.read_csv(
         "../data/cleaned/hdb_resale_cleaned.csv",
         low_memory=False
