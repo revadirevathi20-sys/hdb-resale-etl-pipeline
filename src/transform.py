@@ -29,7 +29,7 @@ def create_resale_identifier(df):
     df["id_part4"] = df["month"].dt.month.astype(str).str.zfill(2)
 
     # --- Part 5: First character of town ---
-    df["id_part5"] = df["town"].str[0]
+    df["id_part5"] = df["town"].str.strip().str.upper().str[0]
 
     # Combine into Resale Identifier
     df["resale_identifier"] = (
@@ -54,6 +54,24 @@ def handle_transform_duplicates(df):
     print(f"Transform duplicates: {len(failed)} removed, {len(passed)} kept")
     return passed, failed
 
+# def hash_identifier(df):
+#     """
+#     Transformation Requirement 3: Hash the resale_identifier using SHA-256
+#     """
+#     def sha256_hash(value):
+#         return hashlib.sha256(str(value).encode("utf-8")).hexdigest()
+
+#     df = df.copy()
+
+#     df["resale_identifier_hashed"] = (
+#         df["resale_identifier"]
+#         .apply(sha256_hash)
+#     )
+
+#     # Remove the original identifier after hashing
+#     df = df.drop(columns=["resale_identifier"])
+
+#     return df
 def hash_identifier(df):
     """
     Transformation Requirement 3: Hash the resale_identifier using SHA-256
@@ -63,4 +81,49 @@ def hash_identifier(df):
 
     df = df.copy()
     df["resale_identifier_hashed"] = df["resale_identifier"].apply(sha256_hash)
+
     return df
+    
+if __name__ == "__main__":
+
+    df = pd.read_csv(
+        "../data/cleaned/hdb_resale_cleaned.csv",
+        low_memory=False
+    )
+
+    df["month"] = pd.to_datetime(df["month"])
+
+    print("\n========== START TRANSFORMATION ==========\n")
+
+    # Requirement 1
+    df = create_resale_identifier(df)
+
+    # Requirement 2
+    passed, failed_duplicates = handle_transform_duplicates(df)
+
+    # Requirement 3
+    passed = hash_identifier(passed)
+    # Sort final dataset for readability
+    passed = passed.sort_values(
+        ["month", "town", "block"]
+    )
+
+    # Save outputs
+    passed.to_csv(
+        "../data/transformed/hdb_resale_transformed.csv",
+        index=False
+    )
+
+    failed_duplicates.to_csv(
+        "../data/transformed/failed_transform_duplicates.csv",
+        index=False
+    )
+
+    print("\n========== TRANSFORMATION SUMMARY ==========")
+    print(f"Input records               : {len(df):,}")
+    print(f"Duplicate identifiers       : {len(failed_duplicates):,}")
+    print(f"Final transformed records   : {len(passed):,}")
+
+    print("\nFiles saved:")
+    print("../data/transformed/hdb_resale_transformed.csv")
+    print("../data/transformed/failed_transform_duplicates.csv")
