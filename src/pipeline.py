@@ -167,3 +167,6 @@ def run_pipeline():
     print("../data/failed/failed_records.csv")
 
     print("\nPipeline completed successfully.")
+
+if __name__ == "__main__":
+    run_pipeline()
