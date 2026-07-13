@@ -19,9 +19,9 @@ def validate_fields(df):
 
     # --- Date validation ---
     valid_date_mask = df["month"].notna()
-    # month should be between Jan 2012 and today
+    # month should be between Jan 2012 and Dec 2016
     valid_date_mask &= (df["month"] >= pd.Timestamp("2012-01-01"))
-    valid_date_mask &= (df["month"] <= pd.Timestamp(date.today()))
+    valid_date_mask &= (df["month"] <= pd.Timestamp("2016-12-31"))
 
     # --- Town validation ---
     valid_towns = {
@@ -78,17 +78,15 @@ def validate_fields(df):
 
 def compute_remaining_lease(df):
     """Requirement 4"""
-    today = date.today()
-
-    # lease_commence_date is typically a year integer e.g. 1985
     df["lease_commence_date"] = pd.to_numeric(df["lease_commence_date"], errors="coerce")
     df["lease_end_year"] = df["lease_commence_date"] + 99
 
     def calc_remaining(row):
-        if pd.isna(row["lease_end_year"]):
+        if pd.isna(row["lease_end_year"]) or pd.isna(row["month"]):
             return None
+        transaction_date = row["month"].date()
         end_date = date(int(row["lease_end_year"]), 1, 1)
-        delta_days = (end_date - today).days
+        delta_days = (end_date - transaction_date).days
         if delta_days <= 0:
             return "0 Years 0 Months"
         years = delta_days // 365

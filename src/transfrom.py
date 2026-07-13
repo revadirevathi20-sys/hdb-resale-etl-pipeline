@@ -10,7 +10,7 @@ def create_resale_identifier(df):
     # --- Part 1: First character ---
     df["id_part1"] = "S"
 
-    # --- Part 2: First 3 digits of block (remove non-numeric chars, zero-pad) ---
+    # --- Part 2: First 3 digits of block ---
     df["block_digits"] = df["block"].str.extract(r"(\d+)")[0].fillna("0")
     df["id_part2"] = df["block_digits"].str[:3].str.zfill(3)
 
