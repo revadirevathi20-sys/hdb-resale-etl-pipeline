@@ -186,6 +186,7 @@ def run_pipeline():
     print(f"Transform duplicates       : {len(failed_transform):,}")
     print(f"Final cleaned records      : {len(master):,}")
     print(f"Final transformed records  : {len(transformed):,}")
+    print(f"Final hashed records       : {len(hashed):,}")
     print(f"Total failed records       : {len(all_failed):,}")
 
     print("\nOutput files created:")
