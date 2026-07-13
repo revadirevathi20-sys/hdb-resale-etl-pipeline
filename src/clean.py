@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import os
 from datetime import date
 
 def profile_data(df):
@@ -223,6 +224,11 @@ if __name__ == "__main__":
 
     # Requirement 7 - Additional cleaning
     passed, failed_cleaning = additional_cleaning(passed)
+
+    # -------------------------------------------------
+    # Create output directory if it doesn't exist
+    # -------------------------------------------------
+    os.makedirs("../data/cleaned", exist_ok=True)
 
     # -------------------------------------------------
     # Save outputs
