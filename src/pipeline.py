@@ -1,3 +1,31 @@
+import os
+import pandas as pd
+
+from ingest import combine_datasets
+from clean import (
+    profile_data,
+    validate_fields,
+    compute_remaining_lease,
+    handle_duplicate_keys,
+    flag_anomalous_prices,
+    additional_cleaning
+)
+from transform import (
+    create_resale_identifier,
+    handle_transform_duplicates,
+    hash_identifier
+)
+
+
+def ensure_directories():
+    """Create output folders if they do not exist."""
+    os.makedirs("../data/raw", exist_ok=True)
+    os.makedirs("../data/cleaned", exist_ok=True)
+    os.makedirs("../data/transformed", exist_ok=True)
+    os.makedirs("../data/hashed", exist_ok=True)
+    os.makedirs("../data/failed", exist_ok=True)
+
+
 def run_pipeline():
 
     ensure_directories()
