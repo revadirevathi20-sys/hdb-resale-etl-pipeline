@@ -1,5 +1,6 @@
 import pandas as pd
 import hashlib
+import os
 
 def create_resale_identifier(df):
     """
