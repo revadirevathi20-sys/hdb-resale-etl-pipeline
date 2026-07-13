@@ -15,9 +15,7 @@ hdb-resale-etl/
 │   ├── failed/         # Rows that failed validation checks
 │   └── hashed/         # Deduplication hashes
 ├── src/
-│   ├── ingest.py       # Downloads and combines raw data files
-│   ├── profile.py      # Generates a data quality profile report
-│   ├── validate.py     # Validates rows against defined rules
+│   ├── ingest.py       # Downloads and combines raw data filests
 │   ├── clean.py        # Cleans invalid or malformed data
 │   ├── transform.py    # Applies business transformations
 │   └── output.py       # Writes final output to file
