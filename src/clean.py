@@ -5,13 +5,30 @@ from datetime import date
 def profile_data(df):
     """Requirement 2"""
     print("=== DATA PROFILING ===")
+
     print(f"Shape: {df.shape}")
-    print(f"\nNull counts:\n{df.isnull().sum()}")
-    print(f"\nDtypes:\n{df.dtypes}")
+
+    print("\nNull counts:")
+    print(df.isnull().sum())
+
+    print("\nDtypes:")
+    print(df.dtypes)
+
     print(f"\nDuplicates: {df.duplicated().sum()}")
-    print(f"\nNumeric summary:\n{df.describe()}")
+
+    print("\nNumeric summary:")
+    print(df.describe())
+
     for col in df.select_dtypes(include="object").columns:
-        print(f"\n[{col}] Unique values ({df[col].nunique()}): {sorted(df[col].unique())[:20]}")
+        values = (
+            df[col]
+            .dropna()
+            .astype(str)
+            .unique()
+        )
+
+        print(f"\n[{col}] Unique values ({len(values)}):")
+        print(sorted(values)[:20])
 
 def validate_fields(df):
     """Requirement 3"""
