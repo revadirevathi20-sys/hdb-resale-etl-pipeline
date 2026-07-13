@@ -35,38 +35,14 @@ Downloads all available HDB resale flat price dataset API and combines them into
 
 - Output: `data/raw/master_combined_raw.csv`
 
-### 2. Profile (`profile.py`)
-
-Generates a data quality profile of the raw dataset before any cleaning is applied. This includes null counts, duplicate counts, data types, and basic statistics per column.
-
-- Input: `data/raw/master_combined_raw.csv`
-- Output: printed report to console
-
-### 3. Validate (`validate.py`)
-
-Applies row-level validation rules to flag records that do not meet expected data quality standards. Flagged rows are separated from valid rows.
-
-Validation rules include:
-
-- `month` must match format `YYYY-MM`
-- `town` must be a known HDB town
-- `flat_type` must be one of the accepted flat types
-- `storey_range` must match format `XX TO XX`
-- `floor_area_sqm` must be between 20 and 400
-- `resale_price` must be greater than 0
-- `lease_commence_date` must be a 4-digit year between 1960 and the current year
-
-- Input: `data/raw/master_combined_raw.csv`
-- Output: valid rows → `data/cleaned/`, failed rows → `data/failed/`
-
-### 4. Clean (`clean.py`)
+### 2. Clean (`clean.py`)
 
 Applies cleaning operations to the validated dataset, including trimming whitespace, standardising string casing, fixing date formats, and removing duplicates.
 
 - Input: `data/cleaned/`
 - Output: `data/cleaned/master_cleaned.csv`
 
-### 5. Transform (`transform.py`)
+### 3. Transform (`transform.py`)
 
 Applies business logic transformations to enrich the cleaned dataset. New derived columns are added to support downstream analysis.
 
@@ -81,7 +57,7 @@ Transformations include:
 - Input: `data/cleaned/master_cleaned.csv`
 - Output: `data/transformed/master_transformed.csv`
 
-### 6. Output (`output.py`)
+### 4. Output (`output.py`)
 
 Writes the final transformed dataset to the output location and generates a summary report of the pipeline run, including row counts at each stage.
 
@@ -145,8 +121,6 @@ pip install -r requirements.txt
 
 # Run the full pipeline
 python src/ingest.py
-python src/profile.py
-python src/validate.py
 python src/clean.py
 python src/transform.py
 python src/output.py
