@@ -3,17 +3,17 @@ import os
 
 RAW_DIR = "data/raw/"
 
-# Map each file to its date filter (inclusive start date)
+# Map each file to its date filter
 FILE_CONFIG = [
     {
         "filename": "resale-flat-prices-based-on-approval-date-2000-feb-2012.csv",
-        "date_col": "month",          # format: YYYY-MM
-        "filter_from": "2012-01",     # only keep Jan 2012 onwards
+        "date_col": "month",          
+        "filter_from": "2012-01",     
     },
     {
         "filename": "resale-flat-prices-based-on-approval-date-mar-2012-to-dec-2014.csv",
         "date_col": "month",
-        "filter_from": None,          # no filter needed
+        "filter_from": None,          
     },
     {
         "filename": "resale-flat-prices-based-on-registration-date-from-jan-2015-to-dec-2016.csv",
