@@ -139,6 +139,9 @@ def run_pipeline():
         ignore_index=True
     )
 
+    # Remove duplicate failed records (keep first occurrence)
+    all_failed = all_failed.drop_duplicates()
+
     all_failed.to_csv(
         "../data/failed/failed_records.csv",
         index=False
