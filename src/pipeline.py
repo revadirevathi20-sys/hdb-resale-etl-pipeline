@@ -61,6 +61,11 @@ def run_pipeline():
     master, failed_validation = validate_fields(master)
     failed_records.append(failed_validation)
 
+    failed_validation.to_csv(
+        "../data/failed/failed_validation.csv",
+        index=False
+    )
+
     # =====================================================
     # ADDITIONAL CLEANING
     # =====================================================
@@ -68,6 +73,11 @@ def run_pipeline():
 
     master, failed_cleaning = additional_cleaning(master)
     failed_records.append(failed_cleaning)
+
+    failed_cleaning.to_csv(
+        "../data/failed/failed_cleaning.csv",
+        index=False
+    )
 
     # =====================================================
     # COMPUTE REMAINING LEASE
@@ -84,6 +94,11 @@ def run_pipeline():
     master, failed_duplicates = handle_duplicate_keys(master)
     failed_records.append(failed_duplicates)
 
+    failed_duplicates.to_csv(
+        "../data/failed/failed_duplicates.csv",
+        index=False
+    )
+
     # =====================================================
     # ANOMALY DETECTION
     # =====================================================
@@ -91,6 +106,11 @@ def run_pipeline():
 
     master, failed_anomalies = flag_anomalous_prices(master)
     failed_records.append(failed_anomalies)
+
+    failed_anomalies.to_csv(
+        "../data/failed/failed_anomalies.csv",
+        index=False
+    )
 
     # =====================================================
     # SAVE CLEANED DATA
@@ -109,6 +129,11 @@ def run_pipeline():
 
     transformed, failed_transform = handle_transform_duplicates(transformed)
     failed_records.append(failed_transform)
+
+    failed_transform.to_csv(
+        "../data/failed/failed_transform_duplicates.csv",
+        index=False
+    )
 
     transformed = hash_identifier(transformed)
 
@@ -134,14 +159,13 @@ def run_pipeline():
     )
 
     # =====================================================
-    # FAILED RECORDS
+    # COMBINED FAILED RECORDS
     # =====================================================
     all_failed = pd.concat(
         failed_records,
         ignore_index=True
     )
 
-    # Remove duplicate failed records (keep first occurrence)
     all_failed = all_failed.drop_duplicates()
 
     all_failed.to_csv(
@@ -169,6 +193,12 @@ def run_pipeline():
     print("../data/cleaned/hdb_resale_cleaned.csv")
     print("../data/transformed/hdb_resale_transformed.csv")
     print("../data/hashed/hdb_resale_hashed.csv")
+
+    print("../data/failed/failed_validation.csv")
+    print("../data/failed/failed_cleaning.csv")
+    print("../data/failed/failed_duplicates.csv")
+    print("../data/failed/failed_anomalies.csv")
+    print("../data/failed/failed_transform_duplicates.csv")
     print("../data/failed/failed_records.csv")
 
     print("\nPipeline completed successfully.")
