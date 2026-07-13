@@ -1,31 +1,3 @@
-import os
-import pandas as pd
-
-from ingest import combine_datasets
-from clean import (
-    profile_data,
-    validate_fields,
-    compute_remaining_lease,
-    handle_duplicate_keys,
-    flag_anomalous_prices,
-    additional_cleaning
-)
-from transform import (
-    create_resale_identifier,
-    handle_transform_duplicates,
-    hash_identifier
-)
-
-
-def ensure_directories():
-    """Create output folders if they do not exist."""
-    os.makedirs("../data/raw", exist_ok=True)
-    os.makedirs("../data/cleaned", exist_ok=True)
-    os.makedirs("../data/transformed", exist_ok=True)
-    os.makedirs("../data/hashed", exist_ok=True)
-    os.makedirs("../data/failed", exist_ok=True)
-
-
 def run_pipeline():
 
     ensure_directories()
@@ -60,6 +32,14 @@ def run_pipeline():
     failed_records.append(failed_validation)
 
     # =====================================================
+    # ADDITIONAL CLEANING
+    # =====================================================
+    print("\n========== ADDITIONAL CLEANING ==========\n")
+
+    master, failed_cleaning = additional_cleaning(master)
+    failed_records.append(failed_cleaning)
+
+    # =====================================================
     # COMPUTE REMAINING LEASE
     # =====================================================
     print("\n========== COMPUTE REMAINING LEASE ==========\n")
@@ -81,14 +61,6 @@ def run_pipeline():
 
     master, failed_anomalies = flag_anomalous_prices(master)
     failed_records.append(failed_anomalies)
-
-    # =====================================================
-    # ADDITIONAL CLEANING
-    # =====================================================
-    print("\n========== ADDITIONAL CLEANING ==========\n")
-
-    master, failed_cleaning = additional_cleaning(master)
-    failed_records.append(failed_cleaning)
 
     # =====================================================
     # SAVE CLEANED DATA
@@ -122,13 +94,17 @@ def run_pipeline():
     # =====================================================
     # HASHED OUTPUT
     # =====================================================
-    transformed.to_csv(
+    hashed = transformed.copy()
+
+    hashed = hashed.drop(columns=["resale_identifier"])
+
+    hashed.to_csv(
         "../data/hashed/hdb_resale_hashed.csv",
         index=False
     )
 
     # =====================================================
-    # SAVE FAILED RECORDS
+    # FAILED RECORDS
     # =====================================================
     all_failed = pd.concat(
         failed_records,
@@ -145,20 +121,21 @@ def run_pipeline():
     # =====================================================
     print("\n========== PIPELINE SUMMARY ==========\n")
 
-    print(f"Raw records               : {len(master) + len(all_failed):,}")
-    print(f"Cleaned records           : {len(master):,}")
-    print(f"Transformed records       : {len(transformed):,}")
-    print(f"Failed records            : {len(all_failed):,}")
+    print(f"Original records           : {len(master) + len(all_failed):,}")
+    print(f"Validation failures        : {len(failed_validation):,}")
+    print(f"Additional cleaning        : {len(failed_cleaning):,}")
+    print(f"Duplicate failures         : {len(failed_duplicates):,}")
+    print(f"Anomaly failures           : {len(failed_anomalies):,}")
+    print(f"Transform duplicates       : {len(failed_transform):,}")
+    print(f"Final cleaned records      : {len(master):,}")
+    print(f"Final transformed records  : {len(transformed):,}")
+    print(f"Total failed records       : {len(all_failed):,}")
 
     print("\nOutput files created:")
-    print("✓ ../data/raw/master_raw_combined.csv")
-    print("✓ ../data/cleaned/hdb_resale_cleaned.csv")
-    print("✓ ../data/transformed/hdb_resale_transformed.csv")
-    print("✓ ../data/hashed/hdb_resale_hashed.csv")
-    print("✓ ../data/failed/failed_records.csv")
+    print("../data/raw/master_raw_combined.csv")
+    print("../data/cleaned/hdb_resale_cleaned.csv")
+    print("../data/transformed/hdb_resale_transformed.csv")
+    print("../data/hashed/hdb_resale_hashed.csv")
+    print("../data/failed/failed_records.csv")
 
     print("\nPipeline completed successfully.")
-
-
-if __name__ == "__main__":
-    run_pipeline()
