@@ -169,29 +169,50 @@ def additional_cleaning(df):
     - Ensure resale_price is numeric and positive.
     - Ensure floor_area_sqm is numeric and within plausible range (20–400 sqm).
     """
-    failed = pd.DataFrame()
 
-    # Standardise strings
+    df = df.copy()
+
+    # -------------------------------------------------
+    # Standardise string columns safely
+    # -------------------------------------------------
     for col in df.select_dtypes(include="object").columns:
-        df[col] = df[col].str.strip().str.upper()
+        df[col] = df[col].apply(
+            lambda x: x.strip().upper() if isinstance(x, str) else x
+        )
 
-    # Numeric checks
-    df["resale_price"] = pd.to_numeric(df["resale_price"], errors="coerce")
-    df["floor_area_sqm"] = pd.to_numeric(df["floor_area_sqm"], errors="coerce")
+    # -------------------------------------------------
+    # Convert numeric columns
+    # -------------------------------------------------
+    df["resale_price"] = pd.to_numeric(
+        df["resale_price"],
+        errors="coerce"
+    )
 
+    df["floor_area_sqm"] = pd.to_numeric(
+        df["floor_area_sqm"],
+        errors="coerce"
+    )
+
+    # -------------------------------------------------
+    # Validation checks
+    # -------------------------------------------------
     invalid_mask = (
-        df["resale_price"].isna() |
-        (df["resale_price"] <= 0) |
-        df["floor_area_sqm"].isna() |
-        (df["floor_area_sqm"] < 20) |
-        (df["floor_area_sqm"] > 400)
+        df["resale_price"].isna()
+        | (df["resale_price"] <= 0)
+        | df["floor_area_sqm"].isna()
+        | (df["floor_area_sqm"] < 20)
+        | (df["floor_area_sqm"] > 400)
     )
 
     failed = df[invalid_mask].copy()
     failed["fail_reason"] = "additional_cleaning_failed"
+
     passed = df[~invalid_mask].copy()
 
-    print(f"Additional cleaning: {len(failed)} removed, {len(passed)} retained")
+    print(
+        f"Additional cleaning: {len(failed)} removed, {len(passed)} retained"
+    )
+
     return passed, failed
 
 if __name__ == "__main__":
