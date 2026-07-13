@@ -39,6 +39,8 @@ def run_pipeline():
 
     master = combine_datasets()
 
+    original_records = len(master)
+
     master.to_csv(
         "../data/raw/master_raw_combined.csv",
         index=False
@@ -152,7 +154,7 @@ def run_pipeline():
     # =====================================================
     print("\n========== PIPELINE SUMMARY ==========\n")
 
-    print(f"Original records           : {len(master) + len(all_failed):,}")
+    print(f"Original records           : {original_records:,}")
     print(f"Validation failures        : {len(failed_validation):,}")
     print(f"Additional cleaning        : {len(failed_cleaning):,}")
     print(f"Duplicate failures         : {len(failed_duplicates):,}")
