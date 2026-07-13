@@ -113,6 +113,10 @@ def compute_remaining_lease(df):
         return f"{years} Years {months} Months"
 
     df["remaining_lease"] = df.apply(calc_remaining, axis=1)
+
+    # Optional: remove temporary lease_end_year column
+    # df.drop(columns=["lease_end_year"], inplace=True)
+
     return df
 
 def handle_duplicate_keys(df):
