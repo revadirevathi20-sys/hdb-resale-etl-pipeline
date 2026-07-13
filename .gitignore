@@ -1,8 +1,21 @@
+# Python
 __pycache__/
 *.pyc
 .env
-*.csv
-*.parquet
-.DS_Store
 venv/
 *.egg-info/
+
+# Data files
+data/**/*.csv
+data/**/*.parquet
+data/**/*.xlsx
+
+# Keep folder structure
+!data/**/.gitkeep
+
+# Jupyter
+.ipynb_checkpoints/
+notebooks/.ipynb_checkpoints/
+
+# OS files
+.DS_Store
