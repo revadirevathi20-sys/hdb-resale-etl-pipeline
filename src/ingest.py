@@ -1,7 +1,10 @@
 import pandas as pd
 import os
 
-RAW_DIR = "data/raw/"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+RAW_DIR = os.path.join(BASE_DIR, "..", "data", "raw")
+CLEAN_DIR = os.path.join(BASE_DIR, "..", "data", "cleaned")
 
 # Map each file to its date filter
 FILE_CONFIG = [
@@ -29,6 +32,8 @@ FILE_CONFIG = [
 
 def load_and_filter(config):
     filepath = os.path.join(RAW_DIR, config["filename"])
+    print(filepath)
+    print(os.path.exists(filepath))
     df = pd.read_csv(filepath)
     df["month"] = pd.to_datetime(df["month"], format="%Y-%m")
 
@@ -49,5 +54,6 @@ def combine_datasets():
 
 if __name__ == "__main__":
     master_df = combine_datasets()
-    master_df.to_csv("data/cleaned/master_raw_combined.csv", index=False)
+    output_path = os.path.join(CLEAN_DIR, "master_raw_combined.csv")
+    master_df.to_csv(output_path, index=False)
     print("Master dataset saved.")
