@@ -49,11 +49,21 @@ def load_and_filter(config):
 def combine_datasets():
     frames = [load_and_filter(cfg) for cfg in FILE_CONFIG]
     master = pd.concat(frames, ignore_index=True)
+
+    master = master[
+        (master["month"] >= pd.Timestamp("2012-01-01")) &
+        (master["month"] <= pd.Timestamp("2016-12-31"))
+    ]
+
     print(f"\nMaster dataset shape: {master.shape}")
+    print(f"Date range: {master['month'].min()} to {master['month'].max()}")
+
     return master
 
 if __name__ == "__main__":
     master_df = combine_datasets()
-    output_path = os.path.join(CLEAN_DIR, "master_raw_combined.csv")
+
+    output_path = os.path.join("..", "data", "cleaned", "master_raw_combined.csv")
     master_df.to_csv(output_path, index=False)
-    print("Master dataset saved.")
+
+    print(f"Master dataset saved to {output_path}")
