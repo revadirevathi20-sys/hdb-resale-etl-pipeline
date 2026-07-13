@@ -1,0 +1,6 @@
+pandas
+numpy
+great_expectations
+hashlib
+pytest
+jupyter
