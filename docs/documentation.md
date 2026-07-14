@@ -16,7 +16,8 @@ The pipeline performs the following stages:
 
 The pipeline produces five groups of output datasets:
 
-* **Raw** – Combined raw dataset
+* **Raw** – Raw dataset
+* **Combined** – Combined raw dataset
 * **Cleaned** – Dataset after data quality checks
 * **Transformed** – Dataset with the generated Resale Identifier
 * **Hashed** – Transformed dataset with the hashed identifier
@@ -31,6 +32,7 @@ hdb-resale-etl-pipeline/
 │
 ├── data/
 │   ├── raw/
+│   ├── combined/
 │   ├── cleaned/
 │   ├── transformed/
 │   ├── hashed/
@@ -85,7 +87,7 @@ The ingestion module:
 Output:
 
 ```
-data/raw/master_raw_combined.csv
+data/combined/master_raw_combined.csv
 ```
 
 ---
@@ -251,7 +253,7 @@ The pipeline produces the following outputs.
 ## Raw
 
 ```
-data/raw/master_raw_combined.csv
+data/combined/master_raw_combined.csv
 ```
 
 ---
