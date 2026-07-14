@@ -24,6 +24,7 @@ def ensure_directories():
     os.makedirs("../data/transformed", exist_ok=True)
     os.makedirs("../data/hashed", exist_ok=True)
     os.makedirs("../data/failed", exist_ok=True)
+    os.makedirs("../data/combined", exist_ok=True)
 
 
 def run_pipeline():
@@ -42,7 +43,7 @@ def run_pipeline():
     original_records = len(master)
 
     master.to_csv(
-        "../data/raw/master_raw_combined.csv",
+        "../data/combined/master_raw_combined.csv",
         index=False
     )
 
@@ -188,7 +189,7 @@ def run_pipeline():
     print(f"Total failed records       : {len(all_failed):,}")
 
     print("\nOutput files created:")
-    print("../data/raw/master_raw_combined.csv")
+    print("../data/combined/master_raw_combined.csv")
     print("../data/cleaned/hdb_resale_cleaned.csv")
     print("../data/transformed/hdb_resale_transformed.csv")
     print("../data/hashed/hdb_resale_hashed.csv")
