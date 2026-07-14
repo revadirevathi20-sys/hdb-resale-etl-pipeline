@@ -64,7 +64,6 @@ if __name__ == "__main__":
     master_df = combine_datasets()
 
     os.makedirs("../data/combined", exist_ok=True)
-    os.makedirs("../data/cleaned", exist_ok=True)
     output_path = os.path.join("..", "data", "combined", "master_raw_combined.csv")
     master_df.to_csv(output_path, index=False)
 
