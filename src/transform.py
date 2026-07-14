@@ -55,24 +55,6 @@ def handle_transform_duplicates(df):
     print(f"Transform duplicates: {len(failed)} removed, {len(passed)} kept")
     return passed, failed
 
-# def hash_identifier(df):
-#     """
-#     Transformation Requirement 3: Hash the resale_identifier using SHA-256
-#     """
-#     def sha256_hash(value):
-#         return hashlib.sha256(str(value).encode("utf-8")).hexdigest()
-
-#     df = df.copy()
-
-#     df["resale_identifier_hashed"] = (
-#         df["resale_identifier"]
-#         .apply(sha256_hash)
-#     )
-
-#     # Remove the original identifier after hashing
-#     df = df.drop(columns=["resale_identifier"])
-
-#     return df
 def hash_identifier(df):
     """
     Transformation Requirement 3: Hash the resale_identifier using SHA-256
@@ -82,6 +64,7 @@ def hash_identifier(df):
 
     df = df.copy()
     df["resale_identifier_hashed"] = df["resale_identifier"].apply(sha256_hash)
+    df = df.drop(columns=["resale_identifier"])  # drop plain identifier after hashing
 
     return df
     
