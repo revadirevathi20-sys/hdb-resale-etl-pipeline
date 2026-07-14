@@ -223,7 +223,7 @@ if __name__ == "__main__":
 
     # Load master dataset produced by ingest.py
     df = pd.read_csv(
-        "../data/cleaned/master_raw_combined.csv",
+        "../data/combined/master_raw_combined.csv",
         low_memory=False
     )
 
