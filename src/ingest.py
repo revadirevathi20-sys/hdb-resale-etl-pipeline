@@ -4,7 +4,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 RAW_DIR = os.path.join(BASE_DIR, "..", "data", "raw")
-CLEAN_DIR = os.path.join(BASE_DIR, "..", "data", "cleaned")
+CLEAN_DIR = os.path.join(BASE_DIR, "..", "data", "combined")
 
 # Map each file to its date filter
 FILE_CONFIG = [
