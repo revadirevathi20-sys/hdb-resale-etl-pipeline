@@ -66,7 +66,8 @@ pip install pandas numpy
 Navigate to the `src` folder and execute:
 
 ```bash
-python3 pipeline.py for mac and python pipeline.py for windows
+python3 pipeline.py for mac
+python pipeline.py for windows
 ```
 
 The pipeline will automatically create the required output directories if they do not already exist.
