@@ -71,6 +71,8 @@ def hash_identifier(df):
 if __name__ == "__main__":
 
     os.makedirs("../data/transformed", exist_ok=True)
+    os.makedirs("../data/hashed", exist_ok=True)
+    os.makedirs("../data/failed", exist_ok=True)
 
     df = pd.read_csv(
         "../data/cleaned/hdb_resale_cleaned.csv",
@@ -81,27 +83,31 @@ if __name__ == "__main__":
 
     print("\n========== START TRANSFORMATION ==========\n")
 
-    # Requirement 1
+    # Requirement 1: Create resale identifier
     df = create_resale_identifier(df)
 
-    # Requirement 2
+    # Requirement 2: Deduplicate on identifier
     passed, failed_duplicates = handle_transform_duplicates(df)
 
-    # Requirement 3
-    passed = hash_identifier(passed)
-    # Sort final dataset for readability
-    passed = passed.sort_values(
-        ["month", "town", "block"]
-    )
+    # Sort for readability
+    passed = passed.sort_values(["month", "town", "block"])
 
-    # Save outputs
+    # Save transformed output (WITH plain resale_identifier, BEFORE hashing)
     passed.to_csv(
         "../data/transformed/hdb_resale_transformed.csv",
         index=False
     )
 
+    # Requirement 3: Hash the identifier and save separately
+    hashed = hash_identifier(passed)
+    hashed.to_csv(
+        "../data/hashed/hdb_resale_hashed.csv",
+        index=False
+    )
+
+    # Save failed duplicates
     failed_duplicates.to_csv(
-        "../data/transformed/failed_transform_duplicates.csv",
+        "../data/failed/failed_transform_duplicates.csv",
         index=False
     )
 
@@ -109,7 +115,9 @@ if __name__ == "__main__":
     print(f"Input records               : {len(df):,}")
     print(f"Duplicate identifiers       : {len(failed_duplicates):,}")
     print(f"Final transformed records   : {len(passed):,}")
+    print(f"Final hashed records        : {len(hashed):,}")
 
     print("\nFiles saved:")
     print("../data/transformed/hdb_resale_transformed.csv")
-    print("../data/transformed/failed_transform_duplicates.csv")
+    print("../data/hashed/hdb_resale_hashed.csv")
+    print("../data/failed/failed_transform_duplicates.csv")
