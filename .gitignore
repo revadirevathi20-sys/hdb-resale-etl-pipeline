@@ -10,9 +10,6 @@ data/**/*.csv
 data/**/*.parquet
 data/**/*.xlsx
 
-# Keep folder structure
-!data/**/.gitkeep
-
 # Jupyter
 .ipynb_checkpoints/
 notebooks/.ipynb_checkpoints/
