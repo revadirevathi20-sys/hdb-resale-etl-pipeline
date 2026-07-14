@@ -114,7 +114,7 @@ def compute_remaining_lease(df):
 
     df["remaining_lease"] = df.apply(calc_remaining, axis=1)
 
-    # Optional: remove temporary lease_end_year column
+    # remove temporary lease_end_year column
     # df.drop(columns=["lease_end_year"], inplace=True)
 
     return df
