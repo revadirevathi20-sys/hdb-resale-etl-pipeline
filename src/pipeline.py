@@ -151,8 +151,6 @@ def run_pipeline():
     # =====================================================
     hashed = transformed.copy()
 
-    hashed = hashed.drop(columns=["resale_identifier"])
-
     hashed.to_csv(
         "../data/hashed/hdb_resale_hashed.csv",
         index=False
