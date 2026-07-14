@@ -254,6 +254,7 @@ if __name__ == "__main__":
     # Create output directory if it doesn't exist
     # -------------------------------------------------
     os.makedirs("../data/cleaned", exist_ok=True)
+    os.makedirs("../data/failed", exis_ok=True)
 
     # -------------------------------------------------
     # Save outputs
@@ -265,22 +266,22 @@ if __name__ == "__main__":
     )
 
     failed_validation.to_csv(
-        "../data/cleaned/failed_validation.csv",
+        "../data/failed/failed_validation.csv",
         index=False
     )
 
     failed_duplicates.to_csv(
-        "../data/cleaned/failed_duplicates.csv",
+        "../data/failed/failed_duplicates.csv",
         index=False
     )
 
     failed_anomalies.to_csv(
-        "../data/cleaned/failed_anomalies.csv",
+        "../data/failed/failed_anomalies.csv",
         index=False
     )
 
     failed_cleaning.to_csv(
-        "../data/cleaned/failed_additional_cleaning.csv",
+        "../data/failed/failed_additional_cleaning.csv",
         index=False
     )
 
@@ -294,7 +295,7 @@ if __name__ == "__main__":
 
     print("\nFiles saved:")
     print("../data/cleaned/hdb_resale_cleaned.csv")
-    print("../data/cleaned/failed_validation.csv")
-    print("../data/cleaned/failed_duplicates.csv")
-    print("../data/cleaned/failed_anomalies.csv")
-    print("../data/cleaned/failed_additional_cleaning.csv")
+    print("../data/failed/failed_validation.csv")
+    print("../data/failed/failed_duplicates.csv")
+    print("../data/failed/failed_anomalies.csv")
+    print("../data/failed/failed_additional_cleaning.csv")
