@@ -254,7 +254,7 @@ if __name__ == "__main__":
     # Create output directory if it doesn't exist
     # -------------------------------------------------
     os.makedirs("../data/cleaned", exist_ok=True)
-    os.makedirs("../data/failed", exis_ok=True)
+    os.makedirs("../data/failed", exist_ok=True)
 
     # -------------------------------------------------
     # Save outputs
